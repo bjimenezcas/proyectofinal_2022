@@ -1,0 +1,1 @@
+docker-compose --env-file .env.local -f .\docker-compose-apache.yml  up -d --build

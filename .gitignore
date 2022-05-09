@@ -1,0 +1,6 @@
+vendor/*
+composer.lock
+backend/runtime/*
+frontend/runtime/*
+docker/apache/log/*
+.history/*

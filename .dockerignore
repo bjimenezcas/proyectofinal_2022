@@ -1,0 +1,17 @@
+vendor/*
+backend/runtime/*
+backend/config/params-static.php
+backend/console/*
+
+frontend/runtime/*
+frontend/console/*
+docker/*
+.htaccess
+
+# Allow files and directories
+!docker/apache/vhost/*
+!docker/apache/php.ini
+!docker/postgre/.ssh/*
+!docker/php/auth.json
+!docker/php/php.ini
+!docker/php/php-fpm.conf
