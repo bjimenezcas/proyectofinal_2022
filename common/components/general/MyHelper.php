@@ -3,13 +3,77 @@
 namespace common\components\general;
 
 use common\models\administration\server\WebAppServer;
+use DateTime;
+use DateTimeZone;
 use kartik\grid\GridView;
 use Yii;
 use yii\helpers\Url;
 
 class MyHelper
 {
-    
+    public static function getOrder($j)
+    {
+        $Orders = [];
+        for ($i = 1; $i <= $j; $i++) {
+            $Orders[$i] = $i;
+        }
+        return $Orders;
+    }
+    public function GetDatetime()
+    {
+        $tmstmp = new DateTime('now', new DateTimeZone('Europe/Madrid'));
+        return $tmstmp;
+    }
+    public function GetActualDate()
+    {
+        $tmstmp = (new MyHelper())->GetDatetime();
+        $tmstmp = $tmstmp->format("Y-m-d H:i:s.u");
+        return $tmstmp;
+    }
+    public static function GenerateUniqueId()
+    {
+        $tmstmp = (new MyHelper())->GetActualDate();
+        $string = md5($tmstmp);
+        $string = hash('SHA512', $string);
+        $string = substr($string, 0, 8) . '-' .
+            substr($string, 8, 4) . '-' .
+            substr($string, 12, 4) . '-' .
+            substr($string, 16, 4) . '-' .
+            substr($string, 20, 10);
+        return $string;
+    }
+    public static function PreventLoop($Type = 'error', $Options = null)
+    {
+        $Result = ['result' => 'ko', 'message' => 'Se ha llegado al limite de redirecciones, actualice el navegador.'];
+        $Url = '';
+        $Time = '1';
+        if (isset($Options)) {
+            if (isset($Options['time'])) {
+                $Time = $Options['time'];
+            }
+        }
+        if ($Type == 'error') {
+            $Url = "<meta http-equiv='refresh' content='$Time; " . Url::toRoute("main/index") . "'>";
+        } elseif ($Type == 'accescorrect') {
+            $Referrer = $Options['Referrer'];
+            $Url = "<meta http-equiv='refresh' content='0; " . Url::toRoute(["main/index", 'redirect' => $Referrer]) . "'>";
+        } elseif ($Type == 'login') {
+            $Url = "<meta http-equiv='refresh' content='$Time; " . Url::toRoute("login/index") . "'>";
+        }
+
+        $SessionError = Yii::$app->session->get('error_loop', 0);
+        if ($SessionError >= 10) {
+            Yii::$app->session->set('error_loop', 0);
+        } else {
+            Yii::$app->session->set('error_loop', ($SessionError + 1));
+
+            $Result = ['result' => 'ok', 'url' => $Url, 'message' => Yii::t('app', 'Redirecting') . '......'];
+        }
+        Yii::warning(" ->" . json_encode($Type));
+        Yii::warning(" ->" . json_encode($Options));
+
+        return (object)$Result;
+    }
 
     public function GenerateBreadcrum($AData)
     {
@@ -121,70 +185,31 @@ class MyHelper
         ];
         return $Result;
     }
-    public function FindDescription($ids, $type, $method = null)
+
+    public function FilterDate($Dates, $Query, $thiss, $type = 'normal')
     {
-        $Name = '';
-        $ids = str_replace(',', "','", $ids);
-        $where = 'id in (\'' . $ids . '\')';
-        if ($ids != '') {
-            if ($type == 'App') {
-                $model = \common\models\administration\Application::find()->where($where)->all();
-                $Name = 'name';
-            } else if ($type == 'AppServer') {
-                $model = WebAppServer::find()->where($where)->all();
-                $Name = 'name';
-            }
-            $i = 0;
-            $Result = '';
-            foreach ($model as $data) {
-                if ($i != 0) {
-                    $Result .= ';';
+        if ($Dates) {
+            foreach ($Dates as $LDates) {
+                //Yii::warning(" ->" . json_encode($Dates));
+                foreach ($LDates as $Alias => $NameDate) {
+                    if ($thiss->$NameDate) {
+                        $Column = $Alias . $NameDate;
+                        $Date = explode(' - ', $thiss->$NameDate);
+                        if ($type == 'normal') {
+                            $StartDate = date('Y-m-d '/*                                             * .'H:i:s'/*/, strtotime($Date[0])) // . ' 00:00:00'/*/
+                            ;
+                            $EndDate = date('Y-m-d '/*                                             * .'H:i:s'/*/, strtotime($Date[1])) // . ' 23:59:59'/*/
+                            ;
+                        } elseif ($type == 'special') {
+                            $StartDate = strtotime($Date[0]);
+                            $EndDate = strtotime($Date[1]);
+                        }
+                        $Query->andFilterWhere(['>=', $Column, $StartDate,])
+                            ->andFilterWhere(['<=', $Column, $EndDate,]);
+                    }
                 }
-                $Result .= $data->$Name;
-                $i++;
-            }
-
-        } else {
-            $Result = '';
-
-        }
-        return $Result;
-    }
-    public static function GetBbdd($Environment, $Type)
-    {
-        $Result = '';
-        if ($Type == 'Multichannel') {
-            if ($Environment == 'prod') {
-                $Result = 'db_multichannel_pro';
-            } elseif ($Environment == 'pre') {
-                $Result = 'db_multichannel_pre';
-            } elseif ($Environment == 'dev') {
-                $Result = 'db_multichannel_dev';
             }
         }
-        return $Result;
+        return $Query;
     }
-    public static function DetectColor($model, $type)
-    {
-        $Result = [];
-        if ($type == 'log_webservice_ahorro') {
-            if (stristr($model->error_description, '"code":200') == TRUE ||
-                stristr($model->error_description, '"description":"OK"') == TRUE) {
-                return ['class' => 'success'];
-            } else if (stristr($model->error_description, 'Contacto Cancelado') == TRUE) {
-                return ['class' => 'warning'];
-            }
-        } else if ($type == 'log_webservice_card') {
-            if (stristr($model->error_description, '"code":200') == TRUE ||
-                stristr($model->error_description, '"status":"200"') == TRUE) {
-                return ['class' => 'success'];
-            } else if (stristr($model->error_description, '"status":"400"') == TRUE) {
-                return ['class' => 'warning'];
-            }
-
-        }
-
-        return $Result;
-    }
-
 }

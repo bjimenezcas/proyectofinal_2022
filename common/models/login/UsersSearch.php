@@ -83,8 +83,6 @@ class UsersSearch extends Users
             'enabled' => $this->enabled,
             'status' => $this->status,
             'mobile' => $this->mobile,
-            'a.id' => $this->app,
-            'dni' => $this->dni,
         ]);
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'description', $this->description])

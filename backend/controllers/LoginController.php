@@ -43,8 +43,6 @@ class LoginController extends Controller
 
                 return $this->AccesCorrect($model);
             } else {
-
-                LoginController::CheckReferrer();
                 return $this->render('index', [
                     'model' => $model,
                 ]);
@@ -55,15 +53,6 @@ class LoginController extends Controller
         /**/
     }
 
-    public function CheckReferrer()
-    {
-        $Referrer = Yii::$app->request->referrer;
-        $Find = 'multichannel.wizinkservice.com/panel';
-        if (strpos($Referrer, $Find)) {
-            Yii::$app->session->Set('Referrer', $Referrer);
-        }
-
-    }
 
     public function AccesCorrect($model)
     {
