@@ -27,7 +27,7 @@ use yii\helpers\Url;
 	</div>
 </nav>
 
-<header id="fh5co-header" class="fh5co-cover" role="banner" style="background-image:url(<?= Url::to(['@web/images/fiesta_bn.jpg']) ?>);" data-stellar-background-ratio="0.5">
+<header id="fh5co-header" class="fh5co-cover" role="banner" style="background-image:url(<?= Url::to(['@web/images/Portada.jpeg']) ?>);" data-stellar-background-ratio="0.5">
 	<div class="overlay"></div>
 	<div class="container">
 		<div class="row">
@@ -69,7 +69,7 @@ use yii\helpers\Url;
 			</div>
 		</div>
 	</div>
-	<div id="fh5co-event" class="fh5co-bg" style="background-image:url(<?= Url::to(['@web/images/welcome.jpg']) ?>);">
+	<div id="fh5co-event" class="fh5co-bg" style="background-image:url(<?= Url::to(['@web/images/Cigarral.jpg']) ?>);">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row">

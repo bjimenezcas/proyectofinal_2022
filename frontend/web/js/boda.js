@@ -4,8 +4,8 @@ clipboard.on('success', function (e) {
 	$("#gracias").show();
 });
 
-//var d = new Date('2022-06-11 12:00:00'); 
-var fullDate = "2022-06-11 13:00:00";
+//var d = new Date('2022-09-10 12:00:00'); 
+var fullDate = "2022-09-10 13:00:00";
 var d = new Date(fullDate);
 
 if(Number.isNaN(d.getMonth())) {
