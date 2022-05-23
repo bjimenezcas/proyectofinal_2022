@@ -59,7 +59,6 @@ class UsersController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $Password = substr(uniqid('', true), 6, 6);
-            $model = $MyHelper->SaveModel($model, 'app');
             $model->setPassword($Password);
             $model->generateAuthKey();
             if ($model->validate()) {

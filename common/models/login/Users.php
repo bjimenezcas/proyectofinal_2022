@@ -4,9 +4,6 @@ namespace common\models\login;
 
 use Yii;
 use yii\db\ActiveRecord;
-use Skilla\ValidatorCifNifNie\Validator;
-use Skilla\ValidatorCifNifNie\Generator;
-use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 class Users extends ActiveRecord implements IdentityInterface
@@ -30,7 +27,7 @@ class Users extends ActiveRecord implements IdentityInterface
             'update' => ['id', 'username', 'email', 'enabled', 'password', 'password_repeat', 'first_name', 'last_name', 'mobile', 'description', 'updated_at'
             ],
             'register' => [
-                 'username', 'email', /* 'password','password_repeat', */ 'first_name', 'last_name', 'mobile', 'description',  'description', 'language', 'app', 'created_at',
+                 'username', 'email', /* 'password','password_repeat', */ 'first_name', 'last_name', 'mobile', 'description',  'description', 'language', 'created_at',
             ],
             'account' => ['username', 'email', 'avatar', 'first_name', 'last_name', 'mobile', 'updated_at', 'dni'],
             'accountpass' => ['password_hash', 'updated_at', 'password_hash', 'auth_key'],
@@ -52,7 +49,7 @@ class Users extends ActiveRecord implements IdentityInterface
             [['first_name', 'last_name', 'mobile'], 'string', 'max' => 64],
             [['access_token', 'verification_code'], 'string', 'max' => 250],
             [['enabled'], 'integer', 'on' => ['update']],
-            [['username', 'email', 'password_hash', 'password', 'password_repeat', 'app'], 'required', 'message' => 'Campo requerido', 'on' => 'register'],
+            [['username', 'email', 'password_hash', 'password', 'password_repeat'], 'required', 'message' => 'Campo requerido', 'on' => 'register'],
             [['username', 'email'], 'required', 'message' => 'Campo requerido', 'on' => 'account'],
             [['password_hash', 'password', 'password_repeat'], 'required', 'message' => 'Campo requerido', 'on' => 'accountpass'],
             [['id', 'username', 'email'], 'required', 'message' => 'Campo requerido', 'on' => 'update'],
@@ -125,7 +122,7 @@ class Users extends ActiveRecord implements IdentityInterface
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
-    public static function findByUsername($username, $app)
+    public static function findByUsername($username)
     {
 
         $UserName = explode('@', $username);

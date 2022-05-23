@@ -1,13 +1,11 @@
 <?php
 
 use yii\helpers\Url;
-use yii\bootstrap5\Modal;
 use kartik\dynagrid\DynaGrid;
 use kartik\grid\GridView;
 use kartik\helpers\Html;
 use common\components\general\Buttons;
 use kartik\checkbox\CheckboxX;
-use kartik\widgets\Spinner;
 use common\components\general\ListOption;
 use common\components\general\MyHelper;
 
@@ -44,15 +42,7 @@ echo DynaGrid::widget(array_merge_recursive($ConfigDynagrid, [
                             'method' => 'post',
                         ],
                             'title' => Yii::t('app', 'delete')]);
-                    }, 
-                    'send' => function ($url, $model, $key) {
-                    return Html::a('<i class="fa fa-paper-plane"></i>', false, [
-                        'data-pjax' => 0,
-                        'class' => '',
-                        'title' => 'send email',
-                        'onclick' => "CheckSend(" . $model->id . ")",
-                    ]);
-                }],],
+                    }, ],],
             'id',
         
             'username',
@@ -115,52 +105,4 @@ echo DynaGrid::widget(array_merge_recursive($ConfigDynagrid, [
         ]
     ]
 ]));
-
-$Spinner = "<div class=''>" . Spinner::widget(['preset' => 'large', 'align' => 'center']) . '<div class="clearfix"></div></div>';
-Modal::begin([
-    'id' => 'ModalSend',
-    // 'name'=>'ModalClose',
-    'title' => '<p>¿Estás seguro de reenviar el correo de confirmación?</p>',
-    'footer' => Html::a('<i class="fa fa-times"></i> Cerrar ', false, [
-            'class' => 'btn btn-danger',
-            'title' => 'Cerrar',
-            'data-target' => "#ModalSend",
-            'data-toggle' => "modal",
-        ]) . Html::a('<i class="fa fa-check"></i> Proceder ', false, [
-            'class' => 'btn btn-primary',
-            'title' => 'contiunar',
-            'id' => "proced_send_email",
-        ]),
-]);
-echo '<div id="body_modal">Este proceso desactivara el usuario y le enviara una nueva password para que active la cuenta mediante el enlace que se le envía por correo electronico.<br>(Generara un nuevo token y una nueva clave de acceso) </div>';
-
-echo '<div style="display:none" id="body_loading">Espere por favor.....' . $Spinner . '</div><div id="body_modal"></div>';
-Modal::end();
 ?>
-
-<script>
-    function CheckSend(i) {
-        $('#ModalSend').modal('show');
-        $('#proced_send_email').attr('onclick', 'Send(' + i + ')');
-    }
-    ;
-
-    function Send(i) {
-
-        $('#body_modal').html('');
-        $('#body_loading').css('display', 'block');
-        $.ajax({
-            url: '<?= Url::toRoute(['administration/users/send_confirm']) ?>?id=' + i + '',
-            type: 'post',
-            dataType: 'html',
-            success: function (data) {
-                var data = JSON.parse(data);
-                location.reload();
-            },
-            error: function () {
-                alert('An error has occured .');
-            }
-        });
-    }
-    ;
-</script>
