@@ -111,9 +111,6 @@ class UsersController extends Controller
             }
         } else {
             $model->password = '';
-            if (!is_array($model->app)) {
-                $model->app = explode(',', $model->app);
-            }
             return $this->render('update', [
                 'model' => $model,
             ]);

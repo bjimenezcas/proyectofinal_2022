@@ -22,7 +22,6 @@ $body = DetailView::widget([
             'username',
             'first_name',
             'last_name',
-            'dni',
             'mobile',
             'email',
             [
