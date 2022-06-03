@@ -6,7 +6,7 @@ $Params = [
     'server' => $Server,//Local,Pro1,Pro2
     'version' => 'v1.0',
     'title' => 'Boda',
-    'web_login' => 'https://labodadelsiglo.com/',
+    'web_login' => 'https://elgrandia.com/',
     //Dependencia de bootstrap de krajee
     'bsDependencyEnabled' => false,//true,false
     'enable_cache_menu' => false, //true,false
