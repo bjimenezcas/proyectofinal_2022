@@ -127,7 +127,7 @@ $config = [
         */
         'request' => [
             'baseUrl' => $baseUrl,
-            'cookieValidationKey' => 'Panel Desarrollado por Constellation',
+            'cookieValidationKey' => 'Panel Desarrollado por Bea',
             'enableCsrfValidation' => false,
             
             'secureHeaders' => [
