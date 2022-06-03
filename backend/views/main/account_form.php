@@ -22,7 +22,6 @@ $form = ActiveForm::begin([
 <div class="row">
     <div class="col col-12 col-md-12">
         <?= $form->field($model, "id")->input("hidden")->label(false); ?>
-        <?= $form->field($model, "avatar")->input("hidden")->label(false); ?>
         <div class="row">
             <?= $form->field($model, "username", ['options' => ['class' => 'col col-6']])->input("text")->textInput(['readonly' => true]); ?>
             <?= $form->field($model, "email", ['options' => ['class' => 'col col-6']])->input("text"); ?>
@@ -31,7 +30,6 @@ $form = ActiveForm::begin([
         <div class="row">
             <?= $form->field($model, "first_name", ['options' => ['class' => 'col col-md-3']])->input("text"); ?>
             <?= $form->field($model, "last_name", ['options' => ['class' => 'col- col-md-3']])->input("text"); ?>
-            <?= $form->field($model, "dni", ['options' => ['class' => 'col col-md-3']])->input("text"); ?>
             <?= $form->field($model, "mobile", ['options' => ['class' => 'col col-md-3']])->input("text"); ?>
         </div>
         <div class="row">
