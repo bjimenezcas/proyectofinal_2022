@@ -17,7 +17,6 @@ $this->title = \Yii::t('app', 'Invitaciones');
 $Breadcrumb[] = ['label' => \Yii::t('app', 'Invitaciones'), 'url' => ['index']];
 $Breadcrumb[] = 'vista';
 $ButtonsTemplate =  Html::a(\Yii::t('app', 'Update'),  ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
-if (Yii::$app->user->identity->rol == 1) {
     $ButtonsTemplate .= Html::a(\Yii::t('app', 'Delete'),  ['delete', 'id' => $model->id], [
         'class' => 'btn btn-danger',
         'data' => [
@@ -25,7 +24,6 @@ if (Yii::$app->user->identity->rol == 1) {
             'method' => 'post',
         ],
     ]);
-}
 ?>
 
 <?= $MyHelper->GenerateBreadcrum($Breadcrumb) ?>
